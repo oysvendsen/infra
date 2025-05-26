@@ -13,6 +13,27 @@ The Terraform files defines the desired resources on the platform. OpenTofu uses
 ## Usage
 The preferred usage method is the [OCI container image](https://opentofu.org/docs/intro/install/docker/).
 
-To initilize the 
+```bash
+# Init providers plugins
+nerdctl run \
+    --workdir=/srv/workspace \
+    --mount type=bind,source=.,target=/srv/workspace \
+    ghcr.io/opentofu/opentofu:latest \
+    init
+
+# Creating plan file
+nerdctl run \
+    --workdir=/srv/workspace \
+    --mount type=bind,source=.,target=/srv/workspace \
+    ghcr.io/opentofu/opentofu:latest \
+    plan -out=main.plan
+
+# Applying plan file
+nerdctl run \
+    --workdir=/srv/workspace \
+    --mount type=bind,source=.,target=/srv/workspace \
+    ghcr.io/opentofu/opentofu:latest \
+    apply "/srv/workspace/main.plan"
+```
 
 ## Automation
