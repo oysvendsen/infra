@@ -35,4 +35,9 @@ nerdctl run \
     apply "/srv/workspace/main.plan"
 ```
 
+Producing kubeconfig for admin user
+```bash
+nerdctl run -it --workdir=/srv/workspace     --mount type=bind,source=.,target=/srv/workspace     ghcr.io/opentofu/opentofu:latest  output kubernetes_kubeconfig 
+```
+
 ## Automation
