@@ -1,2 +1,3 @@
 main.tf
+main.plan
 exoscale_secret_keys.tfvars
