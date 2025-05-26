@@ -8,7 +8,6 @@ The Terraform files defines the desired resources on the platform. OpenTofu uses
 ## Structure and Architecture
 
 `main.tf` contains all the resources that are desired during "normal operations".
-`empty.tf` contains no resources and is meant to "tear down" all resources on the platform.
 
 ## Usage
 The preferred usage method is the [OCI container image](https://opentofu.org/docs/intro/install/docker/).
