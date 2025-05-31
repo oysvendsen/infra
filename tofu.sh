@@ -82,7 +82,9 @@ function kubeconfig() {
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
-        output kubernetes_kubeconfig
+        output kubernetes_kubeconfig |
+    sed 's/^<<EOT//g' |
+    sed 's/^EOT//g'
 }
 
 function alias_func() {
