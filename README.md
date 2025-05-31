@@ -7,44 +7,15 @@ The Terraform files defines the desired resources on the platform. OpenTofu uses
 
 ## Structure and Architecture
 
-`main.tf` contains all the resources that are desired during "normal operations".
+The file `main.tf` contains all the resources that are desired during "normal operations".
+It requires the existence of a '*.auto.tfvars' file with the 'api_key' and 'api_secret' specified.
 
 ## Usage
-The preferred usage method is the [OCI container image](https://opentofu.org/docs/intro/install/docker/).
+OpenTofu, much like TerraForm, deploys infrastructure in four steps; init - to set up the local directory, plan - to create a file with all the changes, apply - initiate the plan, and destroy - to remove all the resources.
 
+The preferred usage method is the [OCI container image](https://opentofu.org/docs/intro/install/docker/). The alias below allows you to run the container image, alternately you can use the script `tofu.sh`.
 ```bash
-# Init providers plugins
-nerdctl run \
-    --workdir=/srv/workspace \
-    --mount type=bind,source=.,target=/srv/workspace \
-    ghcr.io/opentofu/opentofu:latest \
-    init
-
-# Creating plan file
-nerdctl run \
-    --workdir=/srv/workspace \
-    --mount type=bind,source=.,target=/srv/workspace \
-    ghcr.io/opentofu/opentofu:latest \
-    plan -out=main.plan
-
-# Applying plan file
-nerdctl run \
-    --workdir=/srv/workspace \
-    --mount type=bind,source=.,target=/srv/workspace \
-    ghcr.io/opentofu/opentofu:latest \
-    apply "/srv/workspace/main.plan"
-
-#Remove all resources
-nerdctl run \
-    --workdir=/srv/workspace \
-    --mount type=bind,source=.,target=/srv/workspace \
-    ghcr.io/opentofu/opentofu:latest \
-    destroy
-```
-
-Producing kubeconfig for admin user
-```bash
-nerdctl run -it --workdir=/srv/workspace     --mount type=bind,source=.,target=/srv/workspace     ghcr.io/opentofu/opentofu:latest  output kubernetes_kubeconfig 
+alias tofu="nerdctl run --workdir=/src/workspace --mount type=bind,source=.,target=/srv/workspace ghcr.io/opentofu/opentofu:latest"
 ```
 
 ## Automation
