@@ -22,6 +22,8 @@ Available commands:
   kubeconfig  Print the kubeconfig from the Terraform state output
   alias       Spits out useful aliases for opentofu
   help        Show this help message
+  ''          Just passes arguments to tofu
+  -help       Shows the Tofu help screen
 
 Examples:
   $SCRIPT_NAME init
@@ -29,6 +31,14 @@ Examples:
   $SCRIPT_NAME help
   $SCRIPT_NAME kubeconfig > kubeconfig.yaml
 EOF
+}
+
+function tofu() {
+    nerdctl run \
+        --workdir=/srv/workspace \
+        --mount type=bind,source=.,target=/srv/workspace \
+        ghcr.io/opentofu/opentofu:latest \
+ 	${@}
 }
 
 function init() {
@@ -46,7 +56,7 @@ function plan() {
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
-        plan
+        plan -out=main.plan
 }
 
 function apply() {
@@ -55,7 +65,7 @@ function apply() {
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
-        apply
+        apply -
 }
 
 function destroy() {
@@ -87,6 +97,6 @@ case "$1" in
     destroy) destroy ;;
     kubeconfig) kubeconfig ;;
     alias) alias_func ;;
-    help|"") help_screen ;;
-    *) echo -e "${RED}Unknown command: $1${NC}"; help_screen; exit 1 ;;
+    help) help_screen ;;
+    ""|*) tofu ${@:1} ;;
 esac
