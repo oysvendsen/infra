@@ -33,6 +33,13 @@ nerdctl run \
     --mount type=bind,source=.,target=/srv/workspace \
     ghcr.io/opentofu/opentofu:latest \
     apply "/srv/workspace/main.plan"
+
+#Remove all resources
+nerdctl run \
+    --workdir=/srv/workspace \
+    --mount type=bind,source=.,target=/srv/workspace \
+    ghcr.io/opentofu/opentofu:latest \
+    destroy
 ```
 
 Producing kubeconfig for admin user
