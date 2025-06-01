@@ -4,6 +4,10 @@ terraform {
       source = "exoscale/exoscale"
       version = "0.64.1"
     }
+    helm = {
+      source = "hashicorp/helm"
+      version = "3.0.0-pre2"
+    }
   }
 }
 
@@ -32,7 +36,6 @@ provider "exoscale" {
   secret=var.api_secret
 }
 
-# Create a kubernetes cluster "kube" 
 resource "exoscale_sks_cluster" "kubernetes" {
   zone = "ch-gva-2"
   name = "kubernetes"
@@ -63,3 +66,34 @@ output "kubernetes_kubeconfig" {
   sensitive = true
   value = exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig
 }
+
+provider "helm" {
+  kubernetes = {
+    config_path = exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig
+  }
+
+  registries = []
+}
+
+resource "helm_release" "argocd" {
+  name       = "argocd"
+  repository = " https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
+  namespace  = "argocd"
+  create_namespace = true
+  
+  set = [
+    {
+      name  = "service.type"
+      value = "ClusterIP"
+    }
+  ]
+}
+
+resource "helm_release" "example" {
+  name       = "my-redis-release"
+  repository = "oci://registry-1.docker.io/bitnamicharts"
+  chart      = "redis"
+  version    = "21.1.11"
+ }
+
