@@ -41,11 +41,11 @@ resource "exoscale_sks_cluster" "kubernetes" {
   name = "kubernetes"
 }
 
-output "my_sks_cluster_endpoint" {
+output "kubernetes_endpoint" {
   value = exoscale_sks_cluster.kubernetes.endpoint
 }
 
-resource "exoscale_sks_nodepool" "my_sks_nodepool" {
+resource "exoscale_sks_nodepool" "kubernetes_nodepool" {
   cluster_id         = exoscale_sks_cluster.kubernetes.id
   zone               = exoscale_sks_cluster.kubernetes.zone
   name               = "kubernetes-nodepool"
@@ -77,10 +77,12 @@ provider "helm" {
 
 resource "helm_release" "argocd" {
   name       = "argocd"
-  repository = " https://argoproj.github.io/argo-helm"
+  repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"
   namespace  = "argocd"
   create_namespace = true
+
+  version = "8.0.14"
   
   set = [
     {
@@ -89,11 +91,3 @@ resource "helm_release" "argocd" {
     }
   ]
 }
-
-resource "helm_release" "example" {
-  name       = "my-redis-release"
-  repository = "oci://registry-1.docker.io/bitnamicharts"
-  chart      = "redis"
-  version    = "21.1.11"
- }
-
