@@ -69,7 +69,11 @@ output "kubernetes_kubeconfig" {
 
 provider "helm" {
   kubernetes = {
-    config_path = exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig
+    host     = exoscale_sks_cluster.kubernetes.endpoint
+
+    client_certificate     = base64decode(yamldecode(exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig).users[0].user.client-certificate-data)
+    client_key             = base64decode(yamldecode(exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig).users[0].user.client-key-data)
+    cluster_ca_certificate = base64decode(yamldecode(exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig).clusters[0].cluster.certificate-authority-data)
   }
 
   registries = []
@@ -84,7 +88,7 @@ resource "helm_release" "argocd" {
 
   version = "8.0.14"
   
-  values = [
-    file("${path.module}/argocd-values.yaml")
-  ]
+#   values = [
+#     file("${path.module}/argocd-values.yaml")
+#   ]
 }
