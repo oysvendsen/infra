@@ -35,6 +35,7 @@ EOF
 
 function tofu() {
     nerdctl run \
+        --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
@@ -44,6 +45,7 @@ function tofu() {
 function init() {
     echo -e "${GREEN}Initializing Terraform...${NC}"
     nerdctl run \
+        --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
@@ -53,6 +55,7 @@ function init() {
 function plan() {
     echo -e "${GREEN}Generating Terraform plan...${NC}"
     nerdctl run \
+        --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
@@ -62,6 +65,7 @@ function plan() {
 function apply() {
     echo -e "${GREEN}Applying Terraform configuration...${NC}"
     nerdctl run \
+        --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
@@ -71,6 +75,7 @@ function apply() {
 function destroy() {
     echo -e "${RED}Destroying infrastructure...${NC}"
     nerdctl run \
+        --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
@@ -79,6 +84,7 @@ function destroy() {
 
 function kubeconfig() {
     nerdctl run \
+        --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
