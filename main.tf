@@ -84,10 +84,7 @@ resource "helm_release" "argocd" {
 
   version = "8.0.14"
   
-  set = [
-    {
-      name  = "service.type"
-      value = "ClusterIP"
-    }
+  values = [
+    file("${path.module}/argocd-values.yaml")
   ]
 }
