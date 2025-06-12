@@ -59,7 +59,7 @@ function plan() {
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
-        plan -out=main.plan
+        plan -out=.terraform/main.plan
 }
 
 function apply() {
@@ -69,7 +69,7 @@ function apply() {
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:latest \
-        apply main.plan
+        apply .terraform/main.plan
 }
 
 function destroy() {

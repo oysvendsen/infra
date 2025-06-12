@@ -9,6 +9,10 @@ terraform {
       version = "3.0.0-pre2"
     }
   }
+
+  backend "local" {
+    path = ".terraform/terraform.tfstate"
+  }
 }
 
 variable "api_key" {
