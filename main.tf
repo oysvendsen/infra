@@ -8,11 +8,12 @@ terraform {
       source = "hashicorp/helm"
       version = "3.0.0-pre2"
     }
+    kubectl = {
+      source = "gavinbunney/kubectl"
+      version = "1.19.0"
+    }
   }
 
-#  backend "local" {
-#    path = ".terraform/terraform.tfstate"
-#  }
 }
 
 variable "api_key" {
@@ -95,4 +96,16 @@ resource "helm_release" "argocd" {
 #   values = [
 #     file("${path.module}/argocd-values.yaml")
 #   ]
+}
+
+provider "kubectl" {
+  host     = exoscale_sks_cluster.kubernetes.endpoint
+
+  client_certificate     = base64decode(yamldecode(exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig).users[0].user.client-certificate-data)
+  client_key             = base64decode(yamldecode(exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig).users[0].user.client-key-data)
+  cluster_ca_certificate = base64decode(yamldecode(exoscale_sks_kubeconfig.kubernetes_kubeconfig.kubeconfig).clusters[0].cluster.certificate-authority-data)
+}
+
+resource "kubectl_manifest" "argocd-infra-gitops-app" {
+  yaml_body = file("${path.module}/argocd-git-app.yaml")
 }
