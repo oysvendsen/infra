@@ -1,1 +1,3 @@
 exoscale_secret_keys.auto.tfvars
+*.tfstate
+*.tfstate.backup

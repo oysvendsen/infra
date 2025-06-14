@@ -7,6 +7,8 @@ GREEN="\033[0;32m"
 RED="\033[0;31m"
 NC="\033[0m"
 
+container_image_version="latest"
+
 # Help function
 function help_screen() {
     cat <<EOF
@@ -38,7 +40,7 @@ function tofu() {
         --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:latest \
+        ghcr.io/opentofu/opentofu:${container_image_version} \
  	${@}
 }
 
@@ -48,7 +50,7 @@ function init() {
         --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:latest \
+        ghcr.io/opentofu/opentofu:${container_image_version} \
 	init
 }
 
@@ -58,7 +60,7 @@ function plan() {
         --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:latest \
+        ghcr.io/opentofu/opentofu:${container_image_version} \
         plan -out=.terraform/main.plan
 }
 
@@ -68,8 +70,8 @@ function apply() {
         --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:latest \
-        apply .terraform/main.plan
+        ghcr.io/opentofu/opentofu:${container_image_version} \
+        apply .terraform/main.plan 
 }
 
 function destroy() {
@@ -78,7 +80,7 @@ function destroy() {
         --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:latest \
+        ghcr.io/opentofu/opentofu:${container_image_version} \
         destroy -auto-approve
 }
 
@@ -87,14 +89,15 @@ function kubeconfig() {
         --rm \
         --workdir=/srv/workspace \
         --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:latest \
+        ghcr.io/opentofu/opentofu:${container_image_version} \
         output kubernetes_kubeconfig |
     sed 's/^<<EOT//g' |
     sed 's/^EOT//g'
 }
 
 function alias_func() {
-    echo "no alias' yet"
+    echo "alias update_local_kubeconfig='.$(pwd)/tofu.sh kubeconfig > $(pwd)/.terraform/config' #Write kubeconfig to local file"
+    echo "export KUBECONFIG='${HOME}/.kube/config:$(pwd)/.terraform/config' #Configure kubeconfig-path to merge standard config and local file."
 }
 
 # Main dispatcher

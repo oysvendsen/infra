@@ -10,9 +10,9 @@ terraform {
     }
   }
 
-  backend "local" {
-    path = ".terraform/terraform.tfstate"
-  }
+#  backend "local" {
+#    path = ".terraform/terraform.tfstate"
+#  }
 }
 
 variable "api_key" {
@@ -55,7 +55,7 @@ resource "exoscale_sks_nodepool" "kubernetes_nodepool" {
   name               = "kubernetes-nodepool"
 
   instance_type      = "standard.medium"
-  size               = 3
+  size               = 1
 }
 
 resource "exoscale_sks_kubeconfig" "kubernetes_kubeconfig" {
