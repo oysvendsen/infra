@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: argocd
+  name: argocd-admin-role
+rules:
+- apiGroups: ["argoproj.io/v1alpha1"] # "" indicates the core API group
+  resources: ["*"]
+  verbs: ["*"]
