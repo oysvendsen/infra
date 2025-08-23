@@ -44,6 +44,7 @@ provider "exoscale" {
 resource "exoscale_sks_cluster" "kubernetes" {
   zone = "ch-gva-2"
   name = "kubernetes"
+  service_level = "starter"
 }
 
 output "kubernetes_endpoint" {
@@ -96,6 +97,11 @@ resource "helm_release" "argocd" {
 #   values = [
 #     file("${path.module}/argocd-values.yaml")
 #   ]
+
+  depends_on = [
+    exoscale_sks_cluster.kubernetes,
+    exoscale_sks_nodepool.kubernetes_nodepool
+  ]
 }
 
 provider "kubectl" {
@@ -109,5 +115,9 @@ provider "kubectl" {
 }
 
 resource "kubectl_manifest" "argocd-infra-gitops-app" {
-  yaml_body = file("${path.module}/argocd-git-app.yaml")
+  yaml_body = file("${path.module}/argocd-application.yaml")
+
+  depends_on = [
+    helm_release.argocd
+  ]
 }

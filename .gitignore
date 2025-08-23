@@ -1,4 +1,10 @@
-.terraform
-exoscale_secret_keys.auto.tfvars
+#terraform related
+**/.terraform
+**/.terraform*
+**/*secret_keys.auto.tfvars
 *.tfstate
 *.tfstate.backup
+
+#emacs related
+**/*~
+**/#*#
