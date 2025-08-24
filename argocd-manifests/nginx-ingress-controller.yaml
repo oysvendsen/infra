@@ -10,7 +10,7 @@ spec:
     repoURL: https://artifacthub.io/packages/helm/nginx/nginx-ingress
     targetRevision: 2.2.2
   destination:
-    name: nginx-ingress-controller
+    name: "in-cluster"
     namespace: nginx-ingress
   syncPolicy:
     syncOptions:
