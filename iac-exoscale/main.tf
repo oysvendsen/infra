@@ -58,6 +58,41 @@ resource "exoscale_sks_nodepool" "kubernetes_nodepool" {
 
   instance_type      = "standard.medium"
   size               = 1
+  security_group_ids = [
+    exoscale_security_group.sks_security_group.id
+  ]
+}
+
+#https://community.exoscale.com/product/compute/containers/quick-start/
+resource "exoscale_security_group" "sks_security_group" {
+  name = "sks-security-group"
+}
+
+resource "exoscale_security_group_rule" "nodeport_services" {
+  security_group_id = exoscale_security_group.sks_security_group.id
+  type              = "INGRESS"
+  protocol          = "TCP"
+  cidr              = "0.0.0.0/0"
+  start_port        = 30000
+  end_port          = 32767
+}
+
+resource "exoscale_security_group_rule" "sks_kubelet" {
+  security_group_id = exoscale_security_group.sks_security_group.id
+  type              = "INGRESS"
+  protocol          = "TCP"
+  user_security_group_id = exoscale_security_group.sks_security_group.id
+  start_port        = 10250
+  end_port          = 10250
+}
+
+resource "exoscale_security_group_rule" "calico_traffic" {
+  security_group_id = exoscale_security_group.sks_security_group.id
+  type              = "INGRESS"
+  protocol          = "TCP"
+  user_security_group_id = exoscale_security_group.sks_security_group.id
+  start_port        = 4789 
+  end_port          = 4789 
 }
 
 resource "exoscale_sks_kubeconfig" "kubernetes_kubeconfig" {
