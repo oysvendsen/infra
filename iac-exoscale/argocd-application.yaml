@@ -15,9 +15,9 @@ spec:
     directory:
       recurse: true
   syncPolicy:
+    syncOptions:
+    - SkipDryRunOnMissingResource=true
     automated:
       selfHeal: true
       prune: true
-
-    
     
