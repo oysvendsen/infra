@@ -12,6 +12,8 @@ spec:
     name: infra-gitops-repo
     repoURL: https://github.com/oysvendsen/infra
     path: argocd-manifests
+    directory:
+      recurse: true
   syncPolicy:
     automated:
       selfHeal: true

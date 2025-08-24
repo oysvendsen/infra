@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  namespace: argocd
+  name: nginx-ingress-controller
+spec:
+  project: default
+  source: 
+    chart: nginx
+    repoUrl: https://artifacthub.io/packages/helm/nginx/nginx-ingress
+    targetRevision: 2.2.2
+  destination:
+    name: nginx-ingress-controller
+    namespace: nginx-ingress
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
