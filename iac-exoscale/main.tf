@@ -94,9 +94,9 @@ resource "helm_release" "argocd" {
 
   version = "8.0.14"
   
-#   values = [
-#     file("${path.module}/argocd-values.yaml")
-#   ]
+  values = [
+    file("${path.module}/argocd-values.yaml")
+  ]
 
   depends_on = [
     exoscale_sks_cluster.kubernetes,
