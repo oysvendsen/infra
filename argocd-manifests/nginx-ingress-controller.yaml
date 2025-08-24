@@ -7,7 +7,7 @@ spec:
   project: default
   source: 
     chart: nginx
-    repoUrl: https://artifacthub.io/packages/helm/nginx/nginx-ingress
+    repoURL: https://artifacthub.io/packages/helm/nginx/nginx-ingress
     targetRevision: 2.2.2
   destination:
     name: nginx-ingress-controller
