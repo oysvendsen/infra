@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source: 
-    chart: nginx
-    repoURL: https://artifacthub.io/packages/helm/nginx/nginx-ingress
+    chart: nginx-ingress
+    repoURL: https://helm.nginx.com/stable
     targetRevision: 2.2.2
   destination:
     name: "in-cluster"
