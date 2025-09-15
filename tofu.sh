@@ -29,10 +29,10 @@ Available commands:
   -help       Shows the Tofu help screen
 
 Examples:
-  $SCRIPT_NAME init
-  $SCRIPT_NAME plan
-  $SCRIPT_NAME help
-  $SCRIPT_NAME kubeconfig > kubeconfig.yaml
+  ${RELATIVE_DIR}/${SCRIPT_NAME} init
+  ${RELATIVE_DIR}/${SCRIPT_NAME} plan
+  ${RELATIVE_DIR}/${SCRIPT_NAME} help
+  ${RELATIVE_DIR}/${SCRIPT_NAME} kubeconfig > kubeconfig.yaml
 EOF
 }
 
