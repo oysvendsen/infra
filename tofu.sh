@@ -11,7 +11,7 @@ NC="\033[0m"
 container_image_version="latest"
 
 # Help function
-function help_screen() {
+function _help_screen() {
     cat <<EOF
 Usage: $SCRIPT_NAME <command>
 
@@ -36,7 +36,7 @@ Examples:
 EOF
 }
 
-function tofu() {
+function _tofu() {
     nerdctl run \
         --rm \
         --workdir=/srv/workspace \
@@ -45,47 +45,27 @@ function tofu() {
  	${@}
 }
 
-function init() {
+function _init() {
     echo -e "${GREEN}Initializing Terraform...${NC}"
-    nerdctl run \
-        --rm \
-        --workdir=/srv/workspace \
-        --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:${container_image_version} \
-	init
+    _tofu init
 }
 
-function plan() {
+function _plan() {
     echo -e "${GREEN}Generating Terraform plan...${NC}"
-    nerdctl run \
-        --rm \
-        --workdir=/srv/workspace \
-        --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:${container_image_version} \
-        plan -out=.terraform/main.plan
+    _tofu plan -out=.terraform/main.plan
 }
 
-function apply() {
+function _apply() {
     echo -e "${GREEN}Applying Terraform configuration...${NC}"
-    nerdctl run \
-        --rm \
-        --workdir=/srv/workspace \
-        --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:${container_image_version} \
-        apply .terraform/main.plan 
+    _tofu apply .terraform/main.plan 
 }
 
-function destroy() {
+function _destroy() {
     echo -e "${RED}Destroying infrastructure...${NC}"
-    nerdctl run \
-        --rm \
-        --workdir=/srv/workspace \
-        --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:${container_image_version} \
-        destroy -auto-approve
+    _tofu destroy -auto-approve
 }
 
-function kubeconfig() {
+function _kubeconfig() {
     nerdctl run \
         --rm \
         --workdir=/srv/workspace \
@@ -96,19 +76,19 @@ function kubeconfig() {
     sed 's/^EOT//g'
 }
 
-function alias_func() {
+function _alias_func() {
     echo "alias update_local_kubeconfig='.$(pwd)/tofu.sh kubeconfig > $(pwd)/.terraform/config' #Write kubeconfig to local file"
     echo "export KUBECONFIG='${HOME}/.kube/config:$(pwd)/.terraform/config' #Configure kubeconfig-path to merge standard config and local file."
 }
 
 # Main dispatcher
 case "$1" in
-    init) init ;;
-    plan) plan ;;
-    apply) apply ;;
-    destroy) destroy ;;
-    kubeconfig) kubeconfig ;;
-    alias) alias_func ;;
-    help) help_screen ;;
+    init) _init ;;
+    plan) _plan ;;
+    apply) _apply ;;
+    destroy) _destroy ;;
+    kubeconfig) _kubeconfig ;;
+    alias) _alias_func ;;
+    help) _help_screen ;;
     ""|*) tofu ${@:1} ;;
 esac
