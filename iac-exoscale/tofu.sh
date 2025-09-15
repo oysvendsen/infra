@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SCRIPT_NAME=$(basename "$0")
+RELATIVE_DIR=$("dirname ${BASH_SOURCE[0]}")
 
 # Colors for output
 GREEN="\033[0;32m"
