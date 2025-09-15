@@ -34,9 +34,9 @@ Examples:
   ${RELATIVE_DIR}/${SCRIPT_NAME} help
   ${RELATIVE_DIR}/${SCRIPT_NAME} kubeconfig > kubeconfig.yaml
 
-tofu help:
-$(_tofu help)
+  tofu help:
 EOF
+    _tofu -help
 }
 
 function _tofu() {
