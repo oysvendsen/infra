@@ -33,6 +33,9 @@ Examples:
   ${RELATIVE_DIR}/${SCRIPT_NAME} plan
   ${RELATIVE_DIR}/${SCRIPT_NAME} help
   ${RELATIVE_DIR}/${SCRIPT_NAME} kubeconfig > kubeconfig.yaml
+
+tofu help:
+$(_tofu help)
 EOF
 }
 
@@ -90,5 +93,5 @@ case "$1" in
     kubeconfig) _kubeconfig ;;
     alias) _alias_func ;;
     help) _help_screen ;;
-    ""|*) tofu ${@:1} ;;
+    ""|*) _tofu ${@:1} ;;
 esac
