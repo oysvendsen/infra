@@ -157,11 +157,11 @@ resource "kubectl_manifest" "argocd-infra-gitops-app" {
   ]
 }
 
-resource "exoscale_dbaas" "test_postgres" {
-  name = "test-postgres"
-  plan = "Hobbyist-2"
-  type = "pg"
-  zone = exoscale_sks_cluster.kubernetes.zone
+#resource "exoscale_dbaas" "test_postgres" {
+#  name = "test-postgres"
+#  plan = "Hobbyist-2"
+#  type = "pg"
+#  zone = exoscale_sks_cluster.kubernetes.zone
 
   #pg = {
   #  admin_username =
@@ -169,4 +169,4 @@ resource "exoscale_dbaas" "test_postgres" {
   #  ip_filter =
   #  pg_settings =
   #}
-}
+#}

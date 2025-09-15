@@ -2,6 +2,7 @@
 
 SCRIPT_NAME=$(basename "$0")
 RELATIVE_DIR=$("dirname ${BASH_SOURCE[0]}")
+EXOSCALE_DIR="iac-exoscale"
 
 # Colors for output
 GREEN="\033[0;32m"
@@ -43,7 +44,7 @@ function _tofu() {
     nerdctl run \
         --rm \
         --workdir=/srv/workspace \
-        --mount type=bind,source=.,target=/srv/workspace \
+        --mount type=bind,source=${EXOSCALE_DIR}/.,target=/srv/workspace \
         ghcr.io/opentofu/opentofu:${container_image_version} \
  	${@}
 }
