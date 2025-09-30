@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SCRIPT_NAME=$(basename "$0")
-RELATIVE_DIR=$("dirname ${BASH_SOURCE[0]}")
 EXOSCALE_DIR="iac-exoscale"
 
 # Colors for output
@@ -30,10 +28,10 @@ Available commands:
   -help       Shows the Tofu help screen
 
 Examples:
-  ${RELATIVE_DIR}/${SCRIPT_NAME} init
-  ${RELATIVE_DIR}/${SCRIPT_NAME} plan
-  ${RELATIVE_DIR}/${SCRIPT_NAME} help
-  ${RELATIVE_DIR}/${SCRIPT_NAME} kubeconfig > kubeconfig.yaml
+  ./tofu.sh init
+  ./tofu.sh plan
+  ./tofu.sh help
+  ./tofu.sh kubeconfig > kubeconfig.yaml
 
   tofu help:
 EOF
@@ -70,14 +68,9 @@ function _destroy() {
 }
 
 function _kubeconfig() {
-    nerdctl run \
-        --rm \
-        --workdir=/srv/workspace \
-        --mount type=bind,source=.,target=/srv/workspace \
-        ghcr.io/opentofu/opentofu:${container_image_version} \
-        output kubernetes_kubeconfig |
-    sed 's/^<<EOT//g' |
-    sed 's/^EOT//g'
+    _tofu output kubernetes_kubeconfig |
+      sed 's/^<<EOT//g' |
+      sed 's/^EOT//g'
 }
 
 function _alias_func() {
