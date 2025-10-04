@@ -56,7 +56,7 @@ resource "exoscale_sks_nodepool" "kubernetes_nodepool" {
   zone               = exoscale_sks_cluster.kubernetes.zone
   name               = "kubernetes-nodepool"
 
-  instance_type      = "standard.medium"
+  instance_type      = "standard.micro"
   size               = 1
   security_group_ids = [
     exoscale_security_group.sks_security_group.id
